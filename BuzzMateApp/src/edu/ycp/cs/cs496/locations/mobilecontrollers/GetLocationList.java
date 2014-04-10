@@ -13,6 +13,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import edu.ycp.cs.cs496.buzzmateapp.MobileApplicationClient;
 import edu.ycp.cs.cs496.locations.model.Location;
 import edu.ycp.cs.cs496.locations.model.json.JSON;
 
@@ -30,7 +34,7 @@ public class GetLocationList {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/locations", 
+		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Locations", 
 				    null, null);
 
 		// Construct request
@@ -38,11 +42,11 @@ public class GetLocationList {
 		
 		// Execute request
 		HttpResponse response = client.execute(request);
-
 		// Parse response
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			// Copy the response body to a string
 			HttpEntity entity = response.getEntity();
+			
 			
 			// Parse JSON
 			return JSON.getObjectMapper().readValue(entity.getContent(), Location[].class);
