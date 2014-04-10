@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
 import edu.ycp.cs.cs496.locations.model.Location;
 
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -42,11 +44,25 @@ public class MobileApplicationClient extends Activity {
 		}
 	}
 	
+	public void getLocation(String locationName) throws URISyntaxException, ClientProtocolException, 
+	IOException, ParserConfigurationException, SAXException{
+		GetLocation controller = new GetLocation();
+		Location location = controller.getLocation(locationName);
+		Location[] singleLocationArray = new Location[1];
+		singleLocationArray[0] = location;
+		if(location != null) {
+			displayLocationsView(singleLocationArray);
+		} else {
+			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	public void setDefaultView() {
         setContentView(R.layout.activity_main);
         
         // TODO: Obtain references to widgets
-        Button showButton = (Button) findViewById(R.id.showButton);        
+        Button showButton = (Button) findViewById(R.id.showButton);   
+        Button getButton = (Button) findViewById(R.id.getButton); 
         
         // TODO: Set onClickListeners for buttons
         showButton.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +79,22 @@ public class MobileApplicationClient extends Activity {
 				
 			}
 		});
+        
+        getButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				EditText getLocation = (EditText) findViewById(R.id.locationName);
+				try {
+					getLocation(getLocation.getText().toString());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+        
 	}
 
 	private void displayLocationsView(Location[] locations) {
