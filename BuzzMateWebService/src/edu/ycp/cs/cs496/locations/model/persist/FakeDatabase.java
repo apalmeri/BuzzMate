@@ -55,6 +55,16 @@ public class FakeDatabase  implements IDatabase{
 	public Map<Integer, User> getUsersFromDB() {
 		return userMap;
 	}
-	
+
+	@Override
+	public List<Location> getLocationListByType(String type) {
+		List<Location> typeList = new ArrayList<Location>();
+		for(int i = 0; i < locations.size(); i++){
+			if(locations.get(i).getType().equals(type)){
+				typeList.add(locations.get(i));
+			}
+		}
+		return typeList;
+	}
 }
 

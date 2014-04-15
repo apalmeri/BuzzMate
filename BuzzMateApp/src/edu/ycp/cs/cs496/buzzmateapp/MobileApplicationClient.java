@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationsByType;
 import edu.ycp.cs.cs496.locations.model.Location;
 
 import android.os.Bundle;
@@ -44,6 +45,17 @@ public class MobileApplicationClient extends Activity {
 		}
 	}
 	
+	public void getLocationsByType(String type) throws URISyntaxException, ClientProtocolException, 
+	IOException, ParserConfigurationException, SAXException{
+		GetLocationsByType locationList = new GetLocationsByType();
+		Location[] locations = locationList.GetLocationsByType(type);
+		if(locations != null) {
+			displayLocationsView(locations);
+		} else {
+			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	public void getLocation(String locationName) throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetLocation controller = new GetLocation();
@@ -61,22 +73,38 @@ public class MobileApplicationClient extends Activity {
         setContentView(R.layout.activity_main);
         
         // TODO: Obtain references to widgets
-        Button showButton = (Button) findViewById(R.id.showButton);   
-        Button getButton = (Button) findViewById(R.id.getButton); 
+        //Button showButton = (Button) findViewById(R.id.showButton);   
+        Button getButton = (Button) findViewById(R.id.getButton);
+        Button barButton = (Button) findViewById(R.id.barButton);
+        Button foodButton = (Button) findViewById(R.id.foodButton);
+        
         
         // TODO: Set onClickListeners for buttons
-        showButton.setOnClickListener(new View.OnClickListener() {
+       barButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				try {
-					getLocationList();
-				}
-				catch (Exception e) {
+					getLocationsByType("Bar");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+			}
+		});
+       
+       foodButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					getLocationsByType("Food");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
         
@@ -102,8 +130,8 @@ public class MobileApplicationClient extends Activity {
 				LinearLayout layout = new LinearLayout(this);
 				layout.setOrientation(LinearLayout.VERTICAL);
 				LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.FILL_PARENT,
-						LinearLayout.LayoutParams.FILL_PARENT);
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
 
 				// Add back button
 				Button backButton = new Button(this);

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs.cs496.locations.controllers.GetLocationByName;
+import edu.ycp.cs.cs496.locations.controllers.GetLocationsByType;
 import edu.ycp.cs.cs496.locations.controllers.GetLocationList;
 import edu.ycp.cs.cs496.locations.model.Location;
 import edu.ycp.cs.cs496.locations.model.json.JSON;
@@ -40,6 +41,21 @@ public class LocationList extends HttpServlet {
 					pathInfo = pathInfo.substring(1);
 				}
 				
+				if(pathInfo.equals("Bar") || pathInfo.equals("Food")){
+					GetLocationsByType typeController = new GetLocationsByType();
+					List<Location> locations = typeController.getLocationListByType(pathInfo);
+					resp.setStatus(HttpServletResponse.SC_OK);
+					resp.setContentType("application/json");
+					
+					// Return the item in JSON format
+					JSON.getObjectMapper().writeValue(resp.getWriter(), locations);
+					
+					return;
+				}
+					
+				//if path info = bar
+				//food
+				//Anything else would be the name of a location
 				// Use a GetItemByName controller to find the item in the database
 				GetLocationByName controller = new GetLocationByName();
 				Location location = controller.getLocation(pathInfo);
