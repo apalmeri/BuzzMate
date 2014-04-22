@@ -10,5 +10,6 @@
     <string name="food_button">Food</string>
     <string name="soberBuddies">Sober Buddies</string>
     <string name="drunkTest">Drunk Test</string>
+    <string name="checkin_button">Check-In</string>
 
 </resources>

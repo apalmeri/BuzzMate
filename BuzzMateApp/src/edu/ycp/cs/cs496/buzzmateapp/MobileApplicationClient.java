@@ -15,9 +15,11 @@ import edu.ycp.cs.cs496.locations.model.Location;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -125,7 +127,7 @@ public class MobileApplicationClient extends Activity {
         
 	}
 
-	private void displayLocationsView(Location[] locations) {
+	private void displayLocationsView(final Location[] locations) {
 		// Create Linear layout
 				LinearLayout layout = new LinearLayout(this);
 				layout.setOrientation(LinearLayout.VERTICAL);
@@ -161,13 +163,30 @@ public class MobileApplicationClient extends Activity {
 				}
 				ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
 				ListView lv = new ListView(this);
-				lv.setAdapter(la);      
-				layout.addView(lv);
-				
-				// Make inventory view visible
-				setContentView(layout,llp);    	
-		    }
+				lv.setAdapter(la); 
+				lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
+						intent.putExtra("Name", locations[position].getName());
+						intent.putExtra("Type", locations[position].getType());
+						intent.putExtra("Street", locations[position].getStreet1());
+						intent.putExtra("City", locations[position].getCity());
+						intent.putExtra("State", locations[position].getState());
+						intent.putExtra("Mailcode", locations[position].getMailcode());
+						intent.putExtra("Phone", locations[position].getPhonenumber());
+						startActivity(intent);
+					}
+					
+				});
+				layout.addView(lv);
+				// Make inventory view visible
+				setContentView(layout,llp);				
+		    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
