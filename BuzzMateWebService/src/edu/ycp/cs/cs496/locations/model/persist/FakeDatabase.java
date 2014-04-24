@@ -10,6 +10,9 @@ import edu.ycp.cs.cs496.locations.model.Location;
 
 public class FakeDatabase  implements IDatabase{
 	private List<Location> locations;
+	//Cabs
+	//Users
+	//People
 	
 	private Map<Integer, User> userMap; // map of user ids to users
 	private List <User> userList;

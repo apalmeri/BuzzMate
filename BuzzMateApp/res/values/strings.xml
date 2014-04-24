@@ -7,9 +7,11 @@
     <string name="show_button">Show All Locations</string>
     <string name="get_button">Find by Name</string>
     <string name="bar_button">Bars</string>
-    <string name="food_button">Food</string>
+    <string name="food_button">Delivery</string>
     <string name="soberBuddies">Sober Buddies</string>
     <string name="drunkTest">Drunk Test</string>
     <string name="checkin_button">Check-In</string>
+    <string name="cab_Button">Cabs</string>
+    <string name="find_friends">Dude, Where Are My Friends?</string>
 
 </resources>
