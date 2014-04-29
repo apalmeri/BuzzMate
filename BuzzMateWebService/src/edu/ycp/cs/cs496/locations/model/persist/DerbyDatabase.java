@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ycp.cs.cs496.locations.controllers.User;
+import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
 public class DerbyDatabase {
 
@@ -148,6 +149,45 @@ public class DerbyDatabase {
 		user.setPassword(resultSet.getString(3));
 	}
 
+	void createTables() throws SQLException {
+		databaseRun(new ITransaction<Boolean>() {
+			@Override
+			public Boolean run(Connection conn) throws SQLException {
+				PreparedStatement stmtContacts = null;	
+				PreparedStatement stmtEvents = null;
+				PreparedStatement stmtUsers = null;
+				try {
+					stmtUsers = conn.prepareStatement(
+							"create table users (" +
+							"id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+							"name VARCHAR(64) NOT NULL, " +
+							"password VARCHAR(64) " +
+							")"
+													);
+					stmtUsers.executeUpdate();
 
+				} finally {
+					DBUtil.closeQuietly(stmtContacts);
+				}				
+				return true;
+			}
+		});
+	}
 
+	void dropTables() throws SQLException {
+		databaseRun(new ITransaction<Boolean>() {
+			@Override
+			public Boolean run(Connection conn) throws SQLException {				
+				PreparedStatement stmtDropApparatus = null;
+				try {					
+					stmtDropApparatus = conn.prepareStatement("DROP TABLE fire_apparatus_spec");
+					stmtDropApparatus.executeUpdate();					
+				} finally {
+					DBUtil.closeQuietly(stmtDropApparatus);
+				}				
+				return true;
+			}
+		});
+	}
+	
 }
