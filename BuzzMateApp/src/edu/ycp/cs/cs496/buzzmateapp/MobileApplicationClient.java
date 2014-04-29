@@ -186,13 +186,5 @@ public class MobileApplicationClient extends Activity {
 				// Make inventory view visible
 				setContentView(layout,llp);				
 		    }
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 }
 

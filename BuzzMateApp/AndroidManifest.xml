@@ -23,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name="edu.ycp.cs.cs496.buzzmateapp.LocationInformation"></activity>
-        
+
     </application>
 
 </manifest>

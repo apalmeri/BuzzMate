@@ -11,6 +11,6 @@ public interface IDatabase {
 		public Location getLocation(String locationName);
 		public List<Location> getLocation();
 		public void addUserToDB(User user);
-		public Map<Integer, User> getUsersFromDB();
 		public List<Location> getLocationListByType(String type);	
+		public Map<Integer, User> getUsersFromDB();	
 }
