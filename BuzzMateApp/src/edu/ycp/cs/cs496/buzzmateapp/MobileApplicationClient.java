@@ -10,12 +10,15 @@ import org.xml.sax.SAXException;
 
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationsByType;
 import edu.ycp.cs.cs496.locations.model.Location;
-
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +46,17 @@ public class MobileApplicationClient extends Activity {
 		}
 	}
 	
+	public void getLocationsByType(String type) throws URISyntaxException, ClientProtocolException, 
+	IOException, ParserConfigurationException, SAXException{
+		GetLocationsByType locationList = new GetLocationsByType();
+		Location[] locations = locationList.GetLocationsByType(type);
+		if(locations != null) {
+			displayLocationsView(locations);
+		} else {
+			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
 	public void getLocation(String locationName) throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetLocation controller = new GetLocation();
@@ -60,22 +74,38 @@ public class MobileApplicationClient extends Activity {
         setContentView(R.layout.activity_main);
         
         // TODO: Obtain references to widgets
-        Button showButton = (Button) findViewById(R.id.showButton);   
-        Button getButton = (Button) findViewById(R.id.getButton); 
+        //Button showButton = (Button) findViewById(R.id.showButton);   
+        Button getButton = (Button) findViewById(R.id.getButton);
+        Button barButton = (Button) findViewById(R.id.barButton);
+        Button foodButton = (Button) findViewById(R.id.foodButton);
+        
         
         // TODO: Set onClickListeners for buttons
-        showButton.setOnClickListener(new View.OnClickListener() {
+       barButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				try {
-					getLocationList();
-				}
-				catch (Exception e) {
+					getLocationsByType("Bar");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+			}
+		});
+       
+       foodButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					getLocationsByType("Food");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
         
@@ -96,13 +126,13 @@ public class MobileApplicationClient extends Activity {
         
 	}
 
-	private void displayLocationsView(Location[] locations) {
+	private void displayLocationsView(final Location[] locations) {
 		// Create Linear layout
 				LinearLayout layout = new LinearLayout(this);
 				layout.setOrientation(LinearLayout.VERTICAL);
 				LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.FILL_PARENT,
-						LinearLayout.LayoutParams.FILL_PARENT);
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
 
 				// Add back button
 				Button backButton = new Button(this);
@@ -132,11 +162,28 @@ public class MobileApplicationClient extends Activity {
 				}
 				ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
 				ListView lv = new ListView(this);
-				lv.setAdapter(la);      
+				lv.setAdapter(la); 
+				lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
+						intent.putExtra("Name", locations[position].getName());
+						intent.putExtra("Type", locations[position].getType());
+						intent.putExtra("Street", locations[position].getStreet1());
+						intent.putExtra("City", locations[position].getCity());
+						intent.putExtra("State", locations[position].getState());
+						intent.putExtra("Mailcode", locations[position].getMailcode());
+						intent.putExtra("Phone", locations[position].getPhonenumber());
+						startActivity(intent);
+					}
+					
+				});
 				layout.addView(lv);
-				
 				// Make inventory view visible
-				setContentView(layout,llp);    	
+				setContentView(layout,llp);				
 		    }
 
 

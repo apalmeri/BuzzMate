@@ -10,6 +10,9 @@ import edu.ycp.cs.cs496.locations.model.Location;
 
 public class FakeDatabase  implements IDatabase{
 	private List<Location> locations;
+	//Cabs
+	//Users
+	//People
 	
 	private Map<Integer, User> userMap; // map of user ids to users
 	private List <User> userList;
@@ -55,6 +58,16 @@ public class FakeDatabase  implements IDatabase{
 	public Map<Integer, User> getUsersFromDB() {
 		return userMap;
 	}
-	
+
+	@Override
+	public List<Location> getLocationListByType(String type) {
+		List<Location> typeList = new ArrayList<Location>();
+		for(int i = 0; i < locations.size(); i++){
+			if(locations.get(i).getType().equals(type)){
+				typeList.add(locations.get(i));
+			}
+		}
+		return typeList;
+	}
 }
 
