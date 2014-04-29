@@ -14,7 +14,6 @@ import edu.ycp.cs.cs496.locations.model.Location;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
@@ -140,12 +139,6 @@ public class MobileApplicationClient extends Activity {
 				setContentView(layout,llp);    	
 		    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
 }
 

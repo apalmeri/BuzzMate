@@ -12,4 +12,5 @@ public interface IDatabase {
 		public List<Location> getLocation();
 		public void addUserToDB(User user);
 		public Map<Integer, User> getUsersFromDB();	
+
 }
