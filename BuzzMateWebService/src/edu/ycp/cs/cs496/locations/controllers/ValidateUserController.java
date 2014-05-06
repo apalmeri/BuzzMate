@@ -2,6 +2,7 @@ package edu.ycp.cs.cs496.locations.controllers;
 
 import java.util.Collection;
 
+import edu.ycp.cs.cs496.locations.model.persist.Database;
 import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
 /**
@@ -20,6 +21,8 @@ public class ValidateUserController {
 	public boolean containsUser(IDatabase db, User user){
 		
 		System.out.println("Database is a " + db.getClass().getName());
+		System.out.println("username: " + user.getUsername());
+		System.out.println("password: " + user.getPassword());
 		
 		Collection<User> allUsers = db.getUsersFromDB().values();
 		for (User dbUser : allUsers) {

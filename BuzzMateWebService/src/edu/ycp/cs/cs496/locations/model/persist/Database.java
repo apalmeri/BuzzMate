@@ -1,8 +1,17 @@
 package edu.ycp.cs.cs496.locations.model.persist;
 
-public class Database {
+public abstract class Database {
 	
-private static final IDatabase theInstance = new FakeDatabase();
+	private static IDatabase theInstance;
+	
+	/**
+	 * Set the singleton instance of {@link IDatabase}.
+	 * 
+	 * @param db the singleton instance of {@link IDatabase}
+	 */
+	public static void setInstance(IDatabase db) {
+		theInstance = db;
+	}
 	
 	/**
 	 * Get the singleton {@link IDatabase} implementation.
