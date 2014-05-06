@@ -52,7 +52,7 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/soberButton"
             android:layout_width="wrap_content"
             android:layout_height="90dp"
             android:layout_weight="0.44"
@@ -71,14 +71,14 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/checkin_button"
             android:layout_width="wrap_content"
             android:layout_height="91dp"
             android:layout_weight="0.23"
             android:text="@string/checkin_button" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/cab_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.29"
@@ -87,7 +87,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/friends_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/find_friends" />

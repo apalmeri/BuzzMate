@@ -29,7 +29,8 @@ public class GetLocation {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Locations/"+locationName, 
+		String ip = "10.0.2.2";
+		uri = URIUtils.createURI("http", ip , 8081, "/Locations/"+locationName, 
 				    null, null);
 
 		// Construct request
