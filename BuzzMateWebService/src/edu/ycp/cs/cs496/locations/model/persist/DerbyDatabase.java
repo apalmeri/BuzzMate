@@ -1,5 +1,7 @@
 package edu.ycp.cs.cs496.locations.model.persist;
 
+// REFERENCED MY CS320 PROJECT FOR DATABASE WORK WHICH HOVEMEYER AND DREW HELPED WITH
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,8 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ycp.cs.cs496.locations.controllers.User;
+import edu.ycp.cs.cs496.locations.model.Location;
+import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
-public class DerbyDatabase {
+public class DerbyDatabase implements IDatabase {
 
 	private static final String DATASTORE = "H:/BuzzMateWebService.db";
 
@@ -55,8 +59,6 @@ public class DerbyDatabase {
 	}
 
 	private<E> E databaseRun(ITransaction<E> transaction) {
-		// FIXME: retry if transaction times out due to deadlock
-
 		try {
 			DatabaseConnection dbConn = getConnection();
 
@@ -76,8 +78,6 @@ public class DerbyDatabase {
 			throw new RuntimeException("SQLException accessing database", e);
 		}
 	}
-	
-	
 	
 	public Map<Integer, User> getUsersFromDB() {
 		return databaseRun(new ITransaction<Map<Integer, User>>() {
@@ -148,6 +148,60 @@ public class DerbyDatabase {
 		user.setPassword(resultSet.getString(3));
 	}
 
+	void createTables() throws SQLException {
+		databaseRun(new ITransaction<Boolean>() {
+			@Override
+			public Boolean run(Connection conn) throws SQLException {
+				PreparedStatement stmtContacts = null;	
+				PreparedStatement stmtEvents = null;
+				PreparedStatement stmtUsers = null;
+				try {
+					stmtUsers = conn.prepareStatement(
+							"create table users (" +
+							"id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+							"name VARCHAR(64) NOT NULL, " +
+							"password VARCHAR(64) " +
+							")"
+													);
+					stmtUsers.executeUpdate();
 
+				} finally {
+					DBUtil.closeQuietly(stmtContacts);
+				}				
+				return true;
+			}
+		});
+	}
+
+	void dropTables() throws SQLException {
+		databaseRun(new ITransaction<Boolean>() {
+			@Override
+			public Boolean run(Connection conn) throws SQLException {				
+				PreparedStatement stmtDropApparatus = null;
+				try {					
+					stmtDropApparatus = conn.prepareStatement("DROP TABLE fire_apparatus_spec");
+					stmtDropApparatus.executeUpdate();					
+				} finally {
+					DBUtil.closeQuietly(stmtDropApparatus);
+				}				
+				return true;
+			}
+		});
+	}
+
+	@Override
+	public Location getLocation(String locationName) {
+		throw new UnsupportedOperationException("TODO - implement this");
+	}
+
+	@Override
+	public List<Location> getLocation() {
+		throw new UnsupportedOperationException("TODO - implement this");
+	}
+
+	@Override
+	public List<Location> getLocationListByType(String type) {
+		throw new UnsupportedOperationException("TODO - implement this");
+	}
 
 }

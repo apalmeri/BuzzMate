@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -76,8 +77,8 @@ public class MobileApplicationClient extends Activity {
         // TODO: Obtain references to widgets
         //Button showButton = (Button) findViewById(R.id.showButton);   
         Button getButton = (Button) findViewById(R.id.getButton);
-        Button barButton = (Button) findViewById(R.id.barButton);
-        Button foodButton = (Button) findViewById(R.id.foodButton);
+        ImageButton barButton = (ImageButton) findViewById(R.id.barButton);
+        ImageButton foodButton = (ImageButton) findViewById(R.id.foodButton);
         
         
         // TODO: Set onClickListeners for buttons
@@ -94,6 +95,7 @@ public class MobileApplicationClient extends Activity {
 				}
 			}
 		});
+      
        
        foodButton.setOnClickListener(new View.OnClickListener() {
 			

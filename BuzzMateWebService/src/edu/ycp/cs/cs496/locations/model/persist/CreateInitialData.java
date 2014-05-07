@@ -9,7 +9,7 @@ public class CreateInitialData {
 
 	public static void main(String[] args) throws SQLException {
 		DerbyDatabase db = new DerbyDatabase();			
-		
+
 		User alana = new User(-1, "alana", "pw");
 
 		db.addUserToDB(alana);

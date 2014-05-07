@@ -1,2 +1,4 @@
 /bin
 /war/WEB-INF/classes
+/._derby*
+/derby.log
