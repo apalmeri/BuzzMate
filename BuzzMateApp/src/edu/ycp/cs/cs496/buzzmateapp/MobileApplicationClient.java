@@ -12,6 +12,7 @@ import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationsByType;
 import edu.ycp.cs.cs496.locations.model.Location;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -79,6 +80,7 @@ public class MobileApplicationClient extends Activity {
         Button getButton = (Button) findViewById(R.id.getButton);
         ImageButton barButton = (ImageButton) findViewById(R.id.barButton);
         ImageButton foodButton = (ImageButton) findViewById(R.id.foodButton);
+        Button drunkTestButton = (Button) findViewById(R.id.drunkTest);
         
         
         // TODO: Set onClickListeners for buttons
@@ -89,6 +91,21 @@ public class MobileApplicationClient extends Activity {
 				// TODO Auto-generated method stub
 				try {
 					getLocationsByType("Bar");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+       
+       drunkTestButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					Intent intent = new Intent(MobileApplicationClient.this, DrunkTest.class);
+					startActivity(intent);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -173,21 +190,14 @@ public class MobileApplicationClient extends Activity {
 						// TODO Auto-generated method stub
 						Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
 						intent.putExtra("Name", locations[position].getName());
-						intent.putExtra("Type", locations[position].getType());
-						intent.putExtra("Street", locations[position].getStreet1());
-						intent.putExtra("City", locations[position].getCity());
-						intent.putExtra("State", locations[position].getState());
-						intent.putExtra("Mailcode", locations[position].getMailcode());
-						intent.putExtra("Phone", locations[position].getPhonenumber());
 						startActivity(intent);
 					}
 					
 				});
+			
 				layout.addView(lv);
 				// Make inventory view visible
 				setContentView(layout,llp);				
 		    }
-
-
 }
 

@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import edu.ycp.cs.cs496.locations.controllers.User;
+import edu.ycp.cs.cs496.locations.model.Cab;
 import edu.ycp.cs.cs496.locations.model.Location;
 
 public class FakeDatabase  implements IDatabase{
 	private List<Location> locations;
-	//Cabs
+	private List<Cab> cabs;
 	//Users
 	//People
 	
@@ -19,11 +20,13 @@ public class FakeDatabase  implements IDatabase{
 	
 	public FakeDatabase(){
 		locations = new ArrayList<Location>();
+		cabs = new ArrayList<Cab>();
 		userList = new 	ArrayList<User>();
 		userMap = new TreeMap<Integer, User>();
 		//Sample Locations
 		locations.add(new Location("BarName", "Bar", "123 Street", "York", "PA", "17403", "717-123-1234"));
 		locations.add(new Location("Pizza", "Food", "456 Street", "York", "PA", "17403", "717-987-9876"));
+		cabs.add(new Cab("Cab Service", "717-789-7894", "Only excepts Cash"));
 	
 		User user = new User();
 		user.setId(-1);
@@ -43,10 +46,27 @@ public class FakeDatabase  implements IDatabase{
 		return null;
 	}
 	
+	
+	public Cab getCab(String cabName){
+		for (Cab cab : cabs){
+			if(cab.getName().equals(cabName)){
+				return new Cab(cab.getName(), cab.getPhonenumber(), cab.getNotes());
+			}
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public List<Location> getLocation() {
 		// return a copy
 		return new ArrayList<Location>(locations);
+	}
+	
+	@Override
+	public List<Cab> getCab() {
+		// return a copy
+		return new ArrayList<Cab>(cabs);
 	}
 
 	@Override

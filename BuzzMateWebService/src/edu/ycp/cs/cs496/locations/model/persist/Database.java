@@ -1,6 +1,6 @@
 package edu.ycp.cs.cs496.locations.model.persist;
 
-public abstract class Database {
+public class Database {
 	
 	/**
 	 * Get the singleton {@link IDatabase} implementation.

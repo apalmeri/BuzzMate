@@ -28,7 +28,8 @@ public class GetLocationsByType {
 		
 		// Construct URI
 		URI uri;
-		uri = URIUtils.createURI("http", "10.0.2.2", 8081, "/Locations/" + type, 
+		String ip = "10.0.2.2";
+		uri = URIUtils.createURI("http", ip , 8081, "/Locations/"+type, 
 				    null, null);
 
 		// Construct request
