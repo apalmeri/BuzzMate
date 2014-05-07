@@ -203,5 +203,5 @@ public class DerbyDatabase implements IDatabase {
 	public List<Location> getLocationListByType(String type) {
 		throw new UnsupportedOperationException("TODO - implement this");
 	}
-
+	
 }
