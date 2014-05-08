@@ -180,7 +180,7 @@ public class DerbyDatabase implements IDatabase {
 							"city VARCHAR(64) NOT NULL, " + 
 							"state VARCHAR(64) NOT NULL, " + 
 							"zip VARCHAR(64) NOT NULL, " + 
-							"phone VARCHAR(64) NOT NULL, " +
+							"phone VARCHAR(64) NOT NULL " +
 							")"
 													);
 					stmtLocations.executeUpdate();

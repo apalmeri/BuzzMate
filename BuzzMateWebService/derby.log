@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed May 07 18:51:54 EDT 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0145-d8e2-d0f5-000002d3b368 
+Thu May 08 11:38:33 EDT 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0145-dc7c-6f5c-000002d27dd8 
 on database directory H:\BuzzMateWebService.db with class loader sun.misc.Launcher$AppClassLoader@263534c1 
 Loaded from file:/E:/Project/CS496_Derby/lib/derby.jar
 java.vendor=Oracle Corporation
