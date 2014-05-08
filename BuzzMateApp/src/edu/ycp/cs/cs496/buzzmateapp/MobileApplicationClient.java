@@ -92,11 +92,9 @@ public class MobileApplicationClient extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					getLocationsByType("Bar");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -106,12 +104,10 @@ public class MobileApplicationClient extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					Intent intent = new Intent(MobileApplicationClient.this, DrunkTest.class);
 					startActivity(intent);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -122,11 +118,9 @@ public class MobileApplicationClient extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					getLocationsByType("Food");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -136,12 +130,10 @@ public class MobileApplicationClient extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				EditText getLocation = (EditText) findViewById(R.id.locationName);
 				try {
 					getLocation(getLocation.getText().toString());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -163,12 +155,10 @@ public class MobileApplicationClient extends Activity {
 				backButton.setLayoutParams(new LayoutParams(
 						LayoutParams.WRAP_CONTENT,
 						LayoutParams.WRAP_CONTENT));
-				// TODO: Add back button onClickListener - Implemented
 				backButton.setOnClickListener(new View.OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub - Implemented
 						setDefaultView();
 					}
 				});
@@ -177,7 +167,6 @@ public class MobileApplicationClient extends Activity {
 				// Add button to layout
 				layout.addView(backButton);
 
-				// TODO: Add ListView with inventory - Implemented
 				String listArray [] = new String[locations.length];
 				for(int i = 0; i < locations.length; i++){
 					String str = locations[i].getName() + " - " + locations[i].getType();
@@ -191,7 +180,6 @@ public class MobileApplicationClient extends Activity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						// TODO Auto-generated method stub
 						Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
 						intent.putExtra("Name", locations[position].getName());
 						startActivity(intent);
