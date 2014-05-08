@@ -26,8 +26,6 @@ public class Location {
 		this.phonenumber = phonenumber;
 	}
 	
-	//NO SETS?
-	
 	public String getName(){
 		return name;
 	}

@@ -219,7 +219,7 @@ public class DerbyDatabase implements IDatabase {
 				try {
 					Map<Integer, Location> result = new HashMap<Integer, Location>();
 
-					stmt = conn.prepareStatement("select location.id, location.name, location.type, location.street, location.city, location.state, location.zip, location.phone");
+					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
 
 					resultSet = stmt.executeQuery();
 					while (resultSet.next()) {
@@ -314,7 +314,7 @@ public class DerbyDatabase implements IDatabase {
 				try {
 					Map<Integer, Location> result = new HashMap<Integer, Location>();
 
-					stmt = conn.prepareStatement("select location.id, location.name, location.type, location.street, location.city, location.state, location.zip, location.phone");
+					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
 
 					resultSet = stmt.executeQuery();
 					while (resultSet.next()) {
