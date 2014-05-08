@@ -57,11 +57,6 @@ public class FakeDatabase  implements IDatabase{
 		return null;
 	}
 	
-	@Override
-	public List<Location> getLocation() {
-		// return a copy
-		return new ArrayList<Location>(locations);
-	}
 	
 	@Override
 	public List<Cab> getCab() {
@@ -79,15 +74,29 @@ public class FakeDatabase  implements IDatabase{
 		return userMap;
 	}
 
+
 	@Override
-	public List<Location> getLocationListByType(String type) {
-		List<Location> typeList = new ArrayList<Location>();
-		for(int i = 0; i < locations.size(); i++){
-			if(locations.get(i).getType().equals(type)){
-				typeList.add(locations.get(i));
-			}
-		}
-		return typeList;
+	public void addLocationToDB(Location location) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<Integer, Location> getLocationFromDB(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<Integer, Location> getLocationListFromDB() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

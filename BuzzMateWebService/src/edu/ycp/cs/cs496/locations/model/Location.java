@@ -8,6 +8,7 @@ public class Location {
 	private String state;
 	private String mailcode;
 	private String phonenumber;
+	private int id;
 	
 	//Default constructor
 	public Location(){
@@ -53,5 +54,20 @@ public class Location {
 	
 	public String getPhonenumber(){
 		return phonenumber;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+		
+	}
+
+	public void setName(String name) {
+		this.name = name;
+		
+	}
+
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return id;
 	}
 }

@@ -153,8 +153,7 @@ public class DerbyDatabase implements IDatabase {
 		databaseRun(new ITransaction<Boolean>() {
 			@Override
 			public Boolean run(Connection conn) throws SQLException {
-				PreparedStatement stmtContacts = null;	
-				PreparedStatement stmtEvents = null;
+				PreparedStatement stmtLocations = null;
 				PreparedStatement stmtUsers = null;
 				try {
 					stmtUsers = conn.prepareStatement(
@@ -167,8 +166,29 @@ public class DerbyDatabase implements IDatabase {
 					stmtUsers.executeUpdate();
 
 				} finally {
-					DBUtil.closeQuietly(stmtContacts);
-				}				
+					//DBUtil.closeQuietly(stmtContacts);
+					DBUtil.closeQuietly(stmtUsers);
+				}
+				
+				try {
+					stmtLocations = conn.prepareStatement(
+							"create table locations (" +
+							"id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+							"name VARCHAR(64) NOT NULL, " +
+							"type VARCHAR(64) NOT NULL, " +
+							"street VARCHAR(64) NOT NULL, " +
+							"city VARCHAR(64) NOT NULL, " + 
+							"state VARCHAR(64) NOT NULL, " + 
+							"zip VARCHAR(64) NOT NULL, " + 
+							"phone VARCHAR(64) NOT NULL, " +
+							")"
+													);
+					stmtLocations.executeUpdate();
+
+				} finally {
+					//DBUtil.closeQuietly(stmtContacts);
+					DBUtil.closeQuietly(stmtLocations);
+				}
 				return true;
 			}
 		});
@@ -189,21 +209,40 @@ public class DerbyDatabase implements IDatabase {
 			}
 		});
 	}
+	
+	public Map<Integer, Location> getLocationFromDB(String name) {
+		return databaseRun(new ITransaction<Map<Integer, Location>>() {
+			@Override
+			public Map<Integer, Location> run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
 
-	@Override
-	public Location getLocation(String locationName) {
-		throw new UnsupportedOperationException("TODO - implement this");
+				try {
+					Map<Integer, Location> result = new HashMap<Integer, Location>();
+
+					stmt = conn.prepareStatement("select location.id, location.name, location.type, location.street, location.city, location.state, location.zip, location.phone");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Location location = new Location();
+						loadLocationFromResultSet(resultSet, location);
+						result.put(location.getId(), location);
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
-	@Override
-	public List<Location> getLocation() {
-		throw new UnsupportedOperationException("TODO - implement this");
+	private void loadLocationFromResultSet(ResultSet resultSet, Location location)
+			throws SQLException {
+		location.setId(resultSet.getInt(1));
+		location.setName(resultSet.getString(2));
 	}
 
-	@Override
-	public List<Location> getLocationListByType(String type) {
-		throw new UnsupportedOperationException("TODO - implement this");
-	}
 
 	@Override
 	public Cab getCab(String cabName) {
@@ -213,6 +252,78 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public List<Cab> getCab() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addLocationToDB(final Location location) {
+		databaseRun(new ITransaction<Boolean>() {
+
+			PreparedStatement stmt = null;
+			ResultSet keys = null;
+
+			@Override
+			public Boolean run(Connection conn) throws SQLException {
+				try{
+
+				stmt = conn.prepareStatement("INSERT INTO locations (name, type, street, city, state, zip, phone)" + 
+											 "VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);			
+
+				stmt.setString(1, location.getName());
+				//stmt.setString(2, location.getPassword());
+
+				stmt.executeUpdate();
+				
+				System.out.printf("location added");
+				keys = stmt.getGeneratedKeys();
+				if (!keys.next()) {
+					throw new SQLException("Couldn't get generated key");
+				}
+				location.setId(keys.getInt(1));
+
+				return null;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(keys);
+				}
+			}	
+		});	
+		
+		
+	}
+
+	@Override
+	public Map<Integer, Location> getLocationListFromDB() {
+		return databaseRun(new ITransaction<Map<Integer, Location>>() {
+			@Override
+			public Map<Integer, Location> run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					Map<Integer, Location> result = new HashMap<Integer, Location>();
+
+					stmt = conn.prepareStatement("select location.id, location.name, location.type, location.street, location.city, location.state, location.zip, location.phone");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Location location = new Location();
+						loadLocationFromResultSet(resultSet, location);
+						result.put(location.getId(), location);
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -2,6 +2,7 @@ package edu.ycp.cs.cs496.locations.servlets;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,7 @@ public class LocationList extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 		if(pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")){
 			GetLocationList controller = new GetLocationList();
-			List<Location> locations = controller.getLocationList();
+			Map<Integer, Location> locations = controller.getLocationList();
 			
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
@@ -43,7 +44,7 @@ public class LocationList extends HttpServlet {
 				
 				if(pathInfo.equals("Bar") || pathInfo.equals("Food")){
 					GetLocationsByType typeController = new GetLocationsByType();
-					List<Location> locations = typeController.getLocationListByType(pathInfo);
+					Map<Integer, Location> locations = typeController.getLocationListByType(pathInfo);
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("application/json");
 					
@@ -58,7 +59,7 @@ public class LocationList extends HttpServlet {
 				//Anything else would be the name of a location
 				// Use a GetItemByName controller to find the item in the database
 				GetLocationByName controller = new GetLocationByName();
-				Location location = controller.getLocation(pathInfo);
+				Map<Integer, Location> location = controller.getLocation(pathInfo);
 				
 				if (location == null) {
 					// No such item, so return a NOT FOUND response
