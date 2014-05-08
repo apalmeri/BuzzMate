@@ -58,16 +58,37 @@ public class Location {
 
 	public void setId(int id) {
 		this.id = id;
-		
 	}
 
 	public void setName(String name) {
 		this.name = name;
-		
 	}
 
 	public Integer getId() {
-		// TODO Auto-generated method stub
 		return id;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setStreet1(String street1) {
+		this.street1 = street1;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public void setMailcode(String mailcode) {
+		this.mailcode = mailcode;	
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
 	}
 }

@@ -186,7 +186,6 @@ public class DerbyDatabase implements IDatabase {
 					stmtLocations.executeUpdate();
 
 				} finally {
-					//DBUtil.closeQuietly(stmtContacts);
 					DBUtil.closeQuietly(stmtLocations);
 				}
 				return true;
@@ -241,6 +240,12 @@ public class DerbyDatabase implements IDatabase {
 			throws SQLException {
 		location.setId(resultSet.getInt(1));
 		location.setName(resultSet.getString(2));
+		location.setType(resultSet.getString(3));
+		location.setStreet1(resultSet.getString(4));
+		location.setCity(resultSet.getString(5));
+		location.setState(resultSet.getString(6));
+		location.setMailcode(resultSet.getString(7));
+		location.setPhonenumber(resultSet.getString(8));
 	}
 
 
