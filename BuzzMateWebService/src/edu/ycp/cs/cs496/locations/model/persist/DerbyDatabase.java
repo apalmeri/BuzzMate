@@ -118,7 +118,7 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean run(Connection conn) throws SQLException {
 				try{
 
-				stmt = conn.prepareStatement("INSERT INTO users (name, password)" +
+				stmt = conn.prepareStatement("INSERT INTO users (name, password) " +
 											 "VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);			
 
 				stmt.setString(1, user.getUsername());
@@ -267,12 +267,16 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean run(Connection conn) throws SQLException {
 				try{
 
-				stmt = conn.prepareStatement("INSERT INTO locations (name, type, street, city, state, zip, phone)" + 
-											 "VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);			
+				stmt = conn.prepareStatement("INSERT INTO locations (name, type, street, city, state, zip, phone) " + 
+											 "VALUES (?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);			
 
 				stmt.setString(1, location.getName());
-				//stmt.setString(2, location.getPassword());
-
+				stmt.setString(2, location.getType());
+				stmt.setString(3, location.getStreet1());
+				stmt.setString(4, location.getCity());
+				stmt.setString(5, location.getState());
+				stmt.setString(6, location.getMailcode());
+				stmt.setString(7, location.getPhonenumber());
 				stmt.executeUpdate();
 				
 				System.out.printf("location added");
