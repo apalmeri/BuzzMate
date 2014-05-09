@@ -9,11 +9,13 @@ import edu.ycp.cs.cs496.locations.controllers.User;
 import edu.ycp.cs.cs496.locations.model.Cab;
 import edu.ycp.cs.cs496.locations.model.Location;
 
+/**
+ * fake database which contains hard coded information to pull from 
+ */
+
 public class FakeDatabase  implements IDatabase{
 	private List<Location> locations;
 	private List<Cab> cabs;
-	//Users
-	//People
 	
 	private Map<Integer, User> userMap; // map of user ids to users
 	private List <User> userList;
@@ -74,28 +76,23 @@ public class FakeDatabase  implements IDatabase{
 		return userMap;
 	}
 
-
 	@Override
 	public void addLocationToDB(Location location) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Map<Integer, Location> getLocationFromDB(String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<Integer, Location> getLocationListFromDB() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -8,9 +8,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.client.ClientProtocolException;
 import org.xml.sax.SAXException;
 
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetCab;
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetCabList;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationsByType;
+import edu.ycp.cs.cs496.locations.model.Cab;
 import edu.ycp.cs.cs496.locations.model.Location;
 
 import android.os.Bundle;
@@ -43,6 +46,7 @@ public class MobileApplicationClient extends Activity {
 		Location[] locations = locationList.getLocationList();
 		if(locations != null) {
 			displayLocationsView(locations);
+			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
 		}
@@ -54,8 +58,33 @@ public class MobileApplicationClient extends Activity {
 		Location[] locations = locationList.GetLocationsByType(type);
 		if(locations != null) {
 			displayLocationsView(locations);
+			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void getCab(String cabName) throws URISyntaxException, ClientProtocolException, 
+	IOException, ParserConfigurationException, SAXException{
+		GetCab controller = new GetCab();
+		Cab cab = controller.getCab(cabName);
+		Cab[] singleLocationArray = new Cab[1];
+		singleLocationArray[0] = cab;
+		if(cab != null) {
+			displayCabsView(singleLocationArray);
+		} else {
+			//Toast.makeText(MobileApplicationClient.this, "No Cabs Found!", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void getCabList() throws URISyntaxException, ClientProtocolException, 
+	IOException, ParserConfigurationException, SAXException{
+		GetCabList cabList = new GetCabList();
+		Cab[] cabs = cabList.getCab();
+		if(cabs != null) {
+			displayCabsView(cabs);
+		} else {
+			Toast.makeText(MobileApplicationClient.this, "No Cabs Found!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -67,6 +96,7 @@ public class MobileApplicationClient extends Activity {
 		singleLocationArray[0] = location;
 		if(location != null) {
 			displayLocationsView(singleLocationArray);
+			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
 		}
@@ -85,6 +115,7 @@ public class MobileApplicationClient extends Activity {
         ImageButton soberButton = (ImageButton) findViewById(R.id.soberButton);
         ImageButton checkInButton = (ImageButton) findViewById(R.id.checkin_button);
         Button drunkTestButton = (Button) findViewById(R.id.drunkTest);
+        Button friendButton = (Button) findViewById(R.id.friends_button);
         
         
         // TODO: Set onClickListeners for buttons
@@ -119,6 +150,8 @@ public class MobileApplicationClient extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
+					Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
+					startActivity(intent);
 					getLocationsByType("Food");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -126,20 +159,43 @@ public class MobileApplicationClient extends Activity {
 			}
 		});
         
-        getButton.setOnClickListener(new View.OnClickListener() {
-			
+       getButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				EditText getLocation = (EditText) findViewById(R.id.locationName);
+				// TODO Auto-generated method stub
+				EditText getText = (EditText) findViewById(R.id.locationName);
 				try {
-					getLocation(getLocation.getText().toString());
+					getLocation(getText.getText().toString());				
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					getCab(getText.getText().toString());				
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+       
+		
+		cabButton.setOnClickListener(new View.OnClickListener() {
+	
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				try {
+					getCabList();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-        
+		
 	}
+	
 
 	private void displayLocationsView(final Location[] locations) {
 		// Create Linear layout
@@ -187,6 +243,60 @@ public class MobileApplicationClient extends Activity {
 					
 				});
 			
+				layout.addView(lv);
+				// Make inventory view visible
+				setContentView(layout,llp);				
+		    }
+	private void displayCabsView(final Cab[] cabs) {
+		// Create Linear layout
+				LinearLayout layout = new LinearLayout(this);
+				layout.setOrientation(LinearLayout.VERTICAL);
+				LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+
+				// Add back button
+				Button backButton = new Button(this);
+				backButton.setText("Back");
+				backButton.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT,
+						LayoutParams.WRAP_CONTENT));
+				// TODO: Add back button onClickListener - Implemented
+				backButton.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub - Implemented
+						setDefaultView();
+					}
+				});
+
+
+				// Add button to layout
+				layout.addView(backButton);
+
+				// TODO: Add ListView with inventory - Implemented
+				String listArray [] = new String[cabs.length];
+				for(int i = 0; i < cabs.length; i++){
+					String str = cabs[i].getName();
+					listArray[i] = str;
+				}
+				ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
+				ListView lv = new ListView(this);
+				lv.setAdapter(la); 
+				lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						Intent intent = new Intent(MobileApplicationClient.this, CabInformation.class);
+						intent.putExtra("Name", cabs[position].getName());
+						startActivity(intent);
+					}
+
+				});
+
 				layout.addView(lv);
 				// Make inventory view visible
 				setContentView(layout,llp);				

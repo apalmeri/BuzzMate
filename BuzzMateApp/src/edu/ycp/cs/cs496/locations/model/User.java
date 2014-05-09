@@ -1,10 +1,6 @@
-package edu.ycp.cs.cs496.locations.controllers;
+package edu.ycp.cs.cs496.locations.model;
 
 import java.io.Serializable;
-
-/**
- * contains all fields for users
- */
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 8812779888704000801L;

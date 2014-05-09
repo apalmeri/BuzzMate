@@ -4,6 +4,8 @@ public class Cab {
 	private String name;
 	private String phonenumber;
 	private String notes;
+	private int id;
+	
 	
 	public Cab(){
 		
@@ -25,5 +27,25 @@ public class Cab {
 	
 	public String getNotes(){
 		return notes;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+	
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 }

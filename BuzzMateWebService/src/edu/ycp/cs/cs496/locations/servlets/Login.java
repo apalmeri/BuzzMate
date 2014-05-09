@@ -31,25 +31,25 @@ public class Login extends HttpServlet {
 		
 		String loginButton = req.getParameter("loginButton");
 		String newUserButton = req.getParameter("newUserButton");
-		if (loginButton != null) {
-			System.out.println("Log in");
-		}
-		if (newUserButton != null) {
-			System.out.println("New user");
-		}
 		
 		
 		// TODO: use controller/database to check whether username/password are known
 		ValidateUserController validateUser = new ValidateUserController();
 		AddUserController addUser = new AddUserController();
 		
+		if (loginButton != null) {
+			System.out.println("Trying to log in");
+		}
+		if (newUserButton != null) {
+			System.out.println("New user");
+			addUser.addUser(Database.getInstance(), user);
+		}
+		
 		if(validateUser.containsUser(Database.getInstance(), user) == true){
 			// Redirect to home page
 			resp.sendRedirect("./home");
 		} else {
-			//req.setAttribute("message", "Unknown username/password");
-			addUser.addUser(Database.getInstance(), user);
-			req.setAttribute("message", "new user added");
+			req.setAttribute("message", "Unknown username/password, please try again");
 			req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
 		}
 	}

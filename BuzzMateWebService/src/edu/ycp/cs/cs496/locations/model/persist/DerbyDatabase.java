@@ -166,7 +166,6 @@ public class DerbyDatabase implements IDatabase {
 					stmtUsers.executeUpdate();
 
 				} finally {
-					//DBUtil.closeQuietly(stmtContacts);
 					DBUtil.closeQuietly(stmtUsers);
 				}
 				
@@ -188,22 +187,6 @@ public class DerbyDatabase implements IDatabase {
 				} finally {
 					DBUtil.closeQuietly(stmtLocations);
 				}
-				return true;
-			}
-		});
-	}
-
-	void dropTables() throws SQLException {
-		databaseRun(new ITransaction<Boolean>() {
-			@Override
-			public Boolean run(Connection conn) throws SQLException {				
-				PreparedStatement stmtDropApparatus = null;
-				try {					
-					stmtDropApparatus = conn.prepareStatement("DROP TABLE fire_apparatus_spec");
-					stmtDropApparatus.executeUpdate();					
-				} finally {
-					DBUtil.closeQuietly(stmtDropApparatus);
-				}				
 				return true;
 			}
 		});

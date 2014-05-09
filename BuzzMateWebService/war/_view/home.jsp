@@ -16,6 +16,7 @@
 
 		<h1 align=center><p>Welcome to Buzz Mate</p></h1>
 		
+		
 	</body>
 	
 </html>

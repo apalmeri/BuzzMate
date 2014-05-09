@@ -1,6 +1,5 @@
 package edu.ycp.cs.cs496.locations.model.persist;
 
-
 import java.sql.SQLException;
 
 import edu.ycp.cs.cs496.locations.controllers.User;

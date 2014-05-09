@@ -2,6 +2,11 @@ package edu.ycp.cs.cs496.locations.controllers;
 
 import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
+/**
+ * @author alana
+ * adds the user object to database
+ */
+
 public class AddUserController {	
 	/**
 	 * @param db	this is the database that is attached to the system

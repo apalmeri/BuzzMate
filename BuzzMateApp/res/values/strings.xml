@@ -16,5 +16,6 @@
     <string name="push_button">Push</string>
     <string name="timer_textView">00:00</string>
     <string name="DrunkTestBackButton">Back</string>
+    <string name="Add_Button">+</string>
 
 </resources>

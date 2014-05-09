@@ -22,7 +22,6 @@ public class LocationList extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-
 		String pathInfo = req.getPathInfo();
 		if(pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")){
 			GetLocationList controller = new GetLocationList();
@@ -30,6 +29,8 @@ public class LocationList extends HttpServlet {
 			
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
+			//req.getRequestDispatcher("/_view/locations.jsp").forward(req, resp);
+			
 			
 			// Return the item in JSON format
 			JSON.getObjectMapper().writeValue(resp.getWriter(), locations);
@@ -46,7 +47,7 @@ public class LocationList extends HttpServlet {
 					GetLocationsByType typeController = new GetLocationsByType();
 					Map<Integer, Location> locations = typeController.getLocationListByType(pathInfo);
 					resp.setStatus(HttpServletResponse.SC_OK);
-					resp.setContentType("application/json");
+					resp.setContentType("text/plain");
 					
 					// Return the item in JSON format
 					JSON.getObjectMapper().writeValue(resp.getWriter(), locations);
@@ -75,7 +76,6 @@ public class LocationList extends HttpServlet {
 				
 				// Return the item in JSON format
 				JSON.getObjectMapper().writeValue(resp.getWriter(), location);
-		
 	}
 
 }
