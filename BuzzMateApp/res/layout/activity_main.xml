@@ -84,7 +84,7 @@
         android:layout_x="264dp"
         android:layout_y="428dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/settings" />
 
     <ImageButton
         android:id="@+id/soberButton"

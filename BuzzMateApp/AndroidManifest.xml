@@ -12,6 +12,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:background="@android:color/transparent"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -26,7 +27,9 @@
         
         <activity android:name="edu.ycp.cs.cs496.buzzmateapp.LocationInformation"></activity>
         <activity android:name="edu.ycp.cs.cs496.buzzmateapp.DrunkTest"></activity>         
-
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.CabInformation"></activity> 
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.MySoberFriends"></activity> 
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.LoginPage"></activity> 
 	</application>
 
 </manifest>

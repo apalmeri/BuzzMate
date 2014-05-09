@@ -9,6 +9,7 @@
     <string name="bar_button">Bars</string>
     <string name="food_button">Delivery</string>
     <string name="soberBuddies">Sober Buddies</string>
+    <string name="settingsButton">Settings Button</string>
     <string name="drunkTest">Drunk Test</string>
     <string name="checkin_button">Check-In</string>
     <string name="cab_Button">Cabs</string>

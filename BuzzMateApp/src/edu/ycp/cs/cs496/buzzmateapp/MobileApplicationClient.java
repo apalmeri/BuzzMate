@@ -73,7 +73,7 @@ public class MobileApplicationClient extends Activity {
 		if(cab != null) {
 			displayCabsView(singleLocationArray);
 		} else {
-			//Toast.makeText(MobileApplicationClient.this, "No Cabs Found!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(MobileApplicationClient.this, "No Cabs Found!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -124,7 +124,8 @@ public class MobileApplicationClient extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					getLocationsByType("Bar");
+					Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
+					startActivity(intent);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -143,7 +144,19 @@ public class MobileApplicationClient extends Activity {
 				}
 			}
 		});
-      
+       
+      	settingsButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					Intent intent = new Intent(MobileApplicationClient.this, LoginPage.class);
+					startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
        
        foodButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -185,9 +198,10 @@ public class MobileApplicationClient extends Activity {
 	
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				try {
 					getCabList();
+					Intent intent = new Intent(MobileApplicationClient.this, CabInformation.class);
+					startActivity(intent);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -218,7 +232,6 @@ public class MobileApplicationClient extends Activity {
 						setDefaultView();
 					}
 				});
-				
 
 				// Add button to layout
 				layout.addView(backButton);
@@ -266,7 +279,6 @@ public class MobileApplicationClient extends Activity {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub - Implemented
 						setDefaultView();
 					}
 				});
@@ -289,7 +301,6 @@ public class MobileApplicationClient extends Activity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						// TODO Auto-generated method stub
 						Intent intent = new Intent(MobileApplicationClient.this, CabInformation.class);
 						intent.putExtra("Name", cabs[position].getName());
 						startActivity(intent);

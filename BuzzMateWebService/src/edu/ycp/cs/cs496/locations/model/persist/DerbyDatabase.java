@@ -315,8 +315,29 @@ public class DerbyDatabase implements IDatabase {
 
 	@Override
 	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
-		// TODO Auto-generated method stub
-		return null;
+		return databaseRun(new ITransaction<Map<Integer, Location>>() {
+			@Override
+			public Map<Integer, Location> run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					Map<Integer, Location> result = new HashMap<Integer, Location>();
+
+					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Location location = new Location();
+						loadLocationFromResultSet(resultSet, location);
+						result.put(location.getId(), location);
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
-	
 }
