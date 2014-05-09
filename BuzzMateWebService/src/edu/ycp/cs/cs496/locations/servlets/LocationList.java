@@ -26,6 +26,7 @@ public class LocationList extends HttpServlet {
 		if(pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")){
 			GetLocationList controller = new GetLocationList();
 			Map<Integer, Location> locations = controller.getLocationList();
+			req.getRequestDispatcher("/_view/locations.jsp").forward(req, resp);
 			
 			resp.setStatus(HttpServletResponse.SC_OK);
 			resp.setContentType("application/json");
@@ -46,8 +47,12 @@ public class LocationList extends HttpServlet {
 				if(pathInfo.equals("Bar") || pathInfo.equals("Food")){
 					GetLocationsByType typeController = new GetLocationsByType();
 					Map<Integer, Location> locations = typeController.getLocationListByType(pathInfo);
+					
+					
+					System.out.println("Returning " + locations.size() + " locations");
+					
 					resp.setStatus(HttpServletResponse.SC_OK);
-					resp.setContentType("text/plain");
+					resp.setContentType("application/json");
 					
 					// Return the item in JSON format
 					JSON.getObjectMapper().writeValue(resp.getWriter(), locations);

@@ -231,7 +231,6 @@ public class DerbyDatabase implements IDatabase {
 		location.setPhonenumber(resultSet.getString(8));
 	}
 
-
 	@Override
 	public Cab getCab(String cabName) {
 		// TODO Auto-generated method stub

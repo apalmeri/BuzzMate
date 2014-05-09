@@ -13,10 +13,16 @@
            backColor = "RosyBrown";        
      %>
     <body BGCOLOR="<%= backColor %>" >
-
-		<h1 align=center><p>Welcome to Buzz Mate</p></h1>
-		
-		
+		<form action="${pageContext.servletContext.contextPath}/home" method="post">
+			
+			<h1 align=center><p>Welcome to Buzz Mate</p></h1>
+			<table>
+			<tr align=center>
+				<td style="font-size:11px"></td>
+				<td><input name="logOut" type="submit" value="Log Out"></input></td>
+			</tr>
+			</table>
+		</form>
 	</body>
 	
 </html>
