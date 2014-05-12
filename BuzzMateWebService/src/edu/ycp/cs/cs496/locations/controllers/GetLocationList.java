@@ -8,7 +8,7 @@ import edu.ycp.cs.cs496.locations.model.persist.Database;
 import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
 public class GetLocationList {
-	public Map<Integer, Location> getLocationList(){
+	public List<Location> getLocationList(){
 		IDatabase database = Database.getInstance();
 		return database.getLocationListFromDB();
 	}

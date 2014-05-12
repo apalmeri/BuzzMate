@@ -16,7 +16,7 @@ public class Location {
 	}
 	
 	//Constructor
-	public Location(String name, String type, String street1, String city, String state, String mailcode, String phonenumber){
+	public Location(int id, String name, String type, String street1, String city, String state, String mailcode, String phonenumber){
 		this.name = name;
 		this.type = type;
 		this.street1 = street1;

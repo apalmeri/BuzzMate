@@ -25,7 +25,7 @@ public class LocationList extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 		if(pathInfo == null || pathInfo.equals("") || pathInfo.equals("/")){
 			GetLocationList controller = new GetLocationList();
-			Map<Integer, Location> locations = controller.getLocationList();
+			List<Location> locations = controller.getLocationList();
 			req.getRequestDispatcher("/_view/locations.jsp").forward(req, resp);
 			
 			resp.setStatus(HttpServletResponse.SC_OK);
@@ -46,10 +46,7 @@ public class LocationList extends HttpServlet {
 				
 				if(pathInfo.equals("Bar") || pathInfo.equals("Food")){
 					GetLocationsByType typeController = new GetLocationsByType();
-					Map<Integer, Location> locations = typeController.getLocationListByType(pathInfo);
-					
-					
-					System.out.println("Returning " + locations.size() + " locations");
+					List<Location> locations = typeController.getLocationListByType(pathInfo);
 					
 					resp.setStatus(HttpServletResponse.SC_OK);
 					resp.setContentType("application/json");
@@ -65,7 +62,7 @@ public class LocationList extends HttpServlet {
 				//Anything else would be the name of a location
 				// Use a GetItemByName controller to find the item in the database
 				GetLocationByName controller = new GetLocationByName();
-				Map<Integer, Location> location = controller.getLocation(pathInfo);
+				Location location = controller.getLocation(pathInfo);
 				
 				if (location == null) {
 					// No such item, so return a NOT FOUND response

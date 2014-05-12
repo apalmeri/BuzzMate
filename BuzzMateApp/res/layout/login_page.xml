@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/UsernameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_x="-1dp"
@@ -13,7 +13,7 @@
         android:ems="10" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/UsernameTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="126dp"
@@ -21,7 +21,7 @@
         android:text="Username" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/passwordText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_x="0dp"
@@ -30,7 +30,7 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/logInButton"
         android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:layout_x="16dp"
@@ -46,7 +46,7 @@
         android:text="New User" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/passwordTextLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_x="128dp"

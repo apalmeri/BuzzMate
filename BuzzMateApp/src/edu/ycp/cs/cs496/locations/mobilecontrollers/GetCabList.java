@@ -3,6 +3,8 @@ package edu.ycp.cs.cs496.locations.mobilecontrollers;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,14 +16,15 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import edu.ycp.cs.cs496.locations.model.Cab;
+import edu.ycp.cs.cs496.locations.model.Location;
 import edu.ycp.cs.cs496.locations.model.json.JSON;
 
 public class GetCabList {
-	public Cab[] getCab() throws ClientProtocolException, URISyntaxException, IOException {
+	public List<Cab> getCab() throws ClientProtocolException, URISyntaxException, IOException {
 		return makeGetRequest();
 	}
 
-	private Cab[] makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
+	private List<Cab> makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
 	{
 		// Create HTTP client
  		HttpClient client = new DefaultHttpClient();
@@ -44,7 +47,8 @@ public class GetCabList {
 			HttpEntity entity = response.getEntity();
 			
 			// Parse JSON
-			return JSON.getObjectMapper().readValue(entity.getContent(), Cab[].class);
+			Cab[] cabs = JSON.getObjectMapper().readValue(entity.getContent(), Cab[].class);
+			return Arrays.asList(cabs);
 		} 
 		
 		// Return null if invalid response

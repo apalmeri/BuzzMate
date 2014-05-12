@@ -155,6 +155,7 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean run(Connection conn) throws SQLException {
 				PreparedStatement stmtLocations = null;
 				PreparedStatement stmtUsers = null;
+				PreparedStatement stmtCabs = null;
 				try {
 					stmtUsers = conn.prepareStatement(
 							"create table users (" +
@@ -187,40 +188,29 @@ public class DerbyDatabase implements IDatabase {
 				} finally {
 					DBUtil.closeQuietly(stmtLocations);
 				}
+				
+				try {
+					stmtCabs = conn.prepareStatement(
+							"create table cabs (" +
+							"id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+							"name VARCHAR(64) NOT NULL, " +
+							"phonenumber VARCHAR(64) NOT NULL, " +
+							"notes VARCHAR(64) NOT NULL " +
+							")"
+													);
+					stmtCabs.executeUpdate();
+
+				} finally {
+					DBUtil.closeQuietly(stmtCabs);
+				}
 				return true;
 			}
 		});
 	}
-	
-	public Map<Integer, Location> getLocationFromDB(String name) {
-		return databaseRun(new ITransaction<Map<Integer, Location>>() {
-			@Override
-			public Map<Integer, Location> run(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
 
-				try {
-					Map<Integer, Location> result = new HashMap<Integer, Location>();
-
-					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
-
-					resultSet = stmt.executeQuery();
-					while (resultSet.next()) {
-						Location location = new Location();
-						loadLocationFromResultSet(resultSet, location);
-						result.put(location.getId(), location);
-					}
-
-					return result;
-				} finally {
-					DBUtil.closeQuietly(stmt);
-				}
-			}
-		});
-	}
-
-	private void loadLocationFromResultSet(ResultSet resultSet, Location location)
+	private Location loadLocationFromResultSet(ResultSet resultSet)
 			throws SQLException {
+		Location location = new Location();
 		location.setId(resultSet.getInt(1));
 		location.setName(resultSet.getString(2));
 		location.setType(resultSet.getString(3));
@@ -229,18 +219,8 @@ public class DerbyDatabase implements IDatabase {
 		location.setState(resultSet.getString(6));
 		location.setMailcode(resultSet.getString(7));
 		location.setPhonenumber(resultSet.getString(8));
-	}
-
-	@Override
-	public Cab getCab(String cabName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Cab> getCab() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return location;
 	}
 
 	@Override
@@ -285,24 +265,26 @@ public class DerbyDatabase implements IDatabase {
 		
 	}
 
+
 	@Override
-	public Map<Integer, Location> getLocationListFromDB() {
-		return databaseRun(new ITransaction<Map<Integer, Location>>() {
+	public List<Location> getLocationByTypeFromDB(final String type) {
+		return databaseRun(new ITransaction<List<Location>>() {
 			@Override
-			public Map<Integer, Location> run(Connection conn) throws SQLException {
+			public List<Location> run(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 
 				try {
-					Map<Integer, Location> result = new HashMap<Integer, Location>();
+					List<Location> result = new ArrayList<Location>();
 
 					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
 
 					resultSet = stmt.executeQuery();
 					while (resultSet.next()) {
-						Location location = new Location();
-						loadLocationFromResultSet(resultSet, location);
-						result.put(location.getId(), location);
+						Location location = loadLocationFromResultSet(resultSet);
+						if(location.getType().equals(type)){
+							result.add(location);
+						}
 					}
 
 					return result;
@@ -314,23 +296,22 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	@Override
-	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
-		return databaseRun(new ITransaction<Map<Integer, Location>>() {
+	public List<Location> getLocationListFromDB() {
+		return databaseRun(new ITransaction<List<Location>>() {
 			@Override
-			public Map<Integer, Location> run(Connection conn) throws SQLException {
+			public List<Location> run(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 
 				try {
-					Map<Integer, Location> result = new HashMap<Integer, Location>();
+					List<Location> result = new ArrayList<Location>();
 
 					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
 
 					resultSet = stmt.executeQuery();
 					while (resultSet.next()) {
-						Location location = new Location();
-						loadLocationFromResultSet(resultSet, location);
-						result.put(location.getId(), location);
+						Location location = loadLocationFromResultSet(resultSet);
+						result.add(location);
 					}
 
 					return result;
@@ -339,5 +320,137 @@ public class DerbyDatabase implements IDatabase {
 				}
 			}
 		});
+	}
+	
+	public Location getLocationFromDB(final String name) {
+		return databaseRun(new ITransaction<Location>() {
+			@Override
+			public Location run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					Location result = new Location();
+
+					stmt = conn.prepareStatement("select locations.id, locations.name, locations.type, locations.street, locations.city, locations.state, locations.zip, locations.phone from locations");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Location location = loadLocationFromResultSet(resultSet);
+						if(location.getName().equals(name)){
+							result = location;
+						}
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+	
+	@Override
+	public Cab getCab(final String cabName) {
+		return databaseRun(new ITransaction<Cab>() {
+			@Override
+			public Cab run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					Cab result = new Cab();
+
+					stmt = conn.prepareStatement("select cab.id, cab.name, cab.phonenumber, cab.notes");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Cab cab = loadCabFromResultSet(resultSet);
+						if(cab.getName().equals(cabName)){
+							result = cab;
+						}
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	protected Cab loadCabFromResultSet(ResultSet resultSet) 
+			throws SQLException {
+		Cab cab = new Cab();
+		cab.setId(resultSet.getInt(1));
+		cab.setName(resultSet.getString(2));
+		cab.setPhone(resultSet.getString(3));
+		cab.setNotes(resultSet.getString(4));
+		
+		return cab;
+	}
+
+	@Override
+	public List<Cab> getCab() {
+		return databaseRun(new ITransaction<List<Cab>>() {
+			@Override
+			public List<Cab> run(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					List<Cab> result = new ArrayList<Cab>();
+
+					stmt = conn.prepareStatement("select cab.id, cab.name, cab.phonenumber, cab.notes");
+
+					resultSet = stmt.executeQuery();
+					while (resultSet.next()) {
+						Cab cab = loadCabFromResultSet(resultSet);
+						result.add(cab);
+					}
+
+					return result;
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void addCabToDB(final Cab cab) {
+		databaseRun(new ITransaction<Boolean>() {
+
+			PreparedStatement stmt = null;
+			ResultSet keys = null;
+
+			@Override
+			public Boolean run(Connection conn) throws SQLException {
+				try{
+
+				stmt = conn.prepareStatement("INSERT INTO cabs (name, phonenumber, notes) " + 
+											 "VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);			
+
+				stmt.setString(1, cab.getName());
+				stmt.setString(2, cab.getPhonenumber());
+				stmt.setString(3, cab.getNotes());
+				stmt.executeUpdate();
+				
+				keys = stmt.getGeneratedKeys();
+				if (!keys.next()) {
+					throw new SQLException("Couldn't get generated key");
+				}
+				cab.setId(keys.getInt(1));
+
+				return null;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(keys);
+				}
+			}	
+		});	
+		
+		
 	}
 }

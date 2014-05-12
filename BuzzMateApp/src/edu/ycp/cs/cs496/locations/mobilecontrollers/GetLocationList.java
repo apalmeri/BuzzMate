@@ -3,6 +3,8 @@ package edu.ycp.cs.cs496.locations.mobilecontrollers;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,11 +25,11 @@ import edu.ycp.cs.cs496.locations.model.json.JSON;
 
 
 public class GetLocationList {
-	public Location[] getLocationList() throws ClientProtocolException, URISyntaxException, IOException {
+	public List<Location> getLocationList() throws ClientProtocolException, URISyntaxException, IOException {
 		return makeGetRequest();
 	}
 
-	private Location[] makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
+	private List<Location> makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
 	{
 		// Create HTTP client
  		HttpClient client = new DefaultHttpClient();
@@ -50,7 +52,8 @@ public class GetLocationList {
 			
 			
 			// Parse JSON
-			return JSON.getObjectMapper().readValue(entity.getContent(), Location[].class);
+			Location[] locations = JSON.getObjectMapper().readValue(entity.getContent(), Location[].class);
+			return Arrays.asList(locations);
 		} 
 		
 		// Return null if invalid response

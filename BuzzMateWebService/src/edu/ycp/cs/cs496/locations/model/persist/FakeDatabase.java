@@ -26,9 +26,9 @@ public class FakeDatabase  implements IDatabase{
 		userList = new 	ArrayList<User>();
 		userMap = new TreeMap<Integer, User>();
 		//Sample Locations
-		locations.add(new Location("BarName", "Bar", "123 Street", "York", "PA", "17403", "717-123-1234"));
-		locations.add(new Location("Pizza", "Food", "456 Street", "York", "PA", "17403", "717-987-9876"));
-		cabs.add(new Cab("Cab Service", "717-789-7894", "Only excepts Cash"));
+		locations.add(new Location(1, "BarName", "Bar", "123 Street", "York", "PA", "17403", "717-123-1234"));
+		locations.add(new Location(2, "Pizza", "Food", "456 Street", "York", "PA", "17403", "717-987-9876"));
+		cabs.add(new Cab(1,"Cab Service", "717-789-7894", "Only excepts Cash"));
 	
 		User user = new User();
 		user.setId(-1);
@@ -41,7 +41,7 @@ public class FakeDatabase  implements IDatabase{
 	public Location getLocation(String locationName){
 		for (Location location : locations){
 			if(location.getName().equals(locationName)){
-				return new Location(location.getName(), location.getType(), location.getStreet1(), location.getCity(), location.getState(), location.getMailcode(), location.getPhonenumber());
+				return new Location(location.getId(), location.getName(), location.getType(), location.getStreet1(), location.getCity(), location.getState(), location.getMailcode(), location.getPhonenumber());
 			}
 		}
 		
@@ -52,7 +52,7 @@ public class FakeDatabase  implements IDatabase{
 	public Cab getCab(String cabName){
 		for (Cab cab : cabs){
 			if(cab.getName().equals(cabName)){
-				return new Cab(cab.getName(), cab.getPhonenumber(), cab.getNotes());
+				return new Cab(cab.getID(), cab.getName(), cab.getPhonenumber(), cab.getNotes());
 			}
 		}
 		
@@ -78,22 +78,28 @@ public class FakeDatabase  implements IDatabase{
 
 	@Override
 	public void addLocationToDB(Location location) {
+		throw new UnsupportedOperationException("TODO - implement");
+	}
+
+	@Override
+	public Location getLocationFromDB(String name) {
+		throw new UnsupportedOperationException("TODO - implement");
+	}
+
+	@Override
+	public List<Location> getLocationByTypeFromDB(String type) {
+		throw new UnsupportedOperationException("TODO - implement");
+	}
+
+	@Override
+	public List<Location> getLocationListFromDB() {
+		throw new UnsupportedOperationException("TODO - implement");
+	}
+
+	@Override
+	public void addCabToDB(Cab cab) {
+		throw new UnsupportedOperationException("TODO - implement");
 		
-	}
-
-	@Override
-	public Map<Integer, Location> getLocationFromDB(String name) {
-		return null;
-	}
-
-	@Override
-	public Map<Integer, Location> getLocationListFromDB() {
-		return null;
-	}
-
-	@Override
-	public Map<Integer, Location> getLocationByTypeFromDB(String type) {
-		return null;
 	}
 
 }

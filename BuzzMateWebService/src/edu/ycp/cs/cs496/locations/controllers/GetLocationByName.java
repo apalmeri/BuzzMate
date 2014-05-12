@@ -7,7 +7,7 @@ import edu.ycp.cs.cs496.locations.model.persist.Database;
 import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
 public class GetLocationByName {
-	public Map<Integer, Location> getLocation(String locationName) {
+	public Location getLocation(String locationName) {
 		IDatabase db = Database.getInstance();
 		return db.getLocationFromDB(locationName);
 	}

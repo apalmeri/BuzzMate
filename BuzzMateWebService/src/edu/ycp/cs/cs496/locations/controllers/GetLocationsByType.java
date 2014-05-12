@@ -8,7 +8,7 @@ import edu.ycp.cs.cs496.locations.model.persist.Database;
 import edu.ycp.cs.cs496.locations.model.persist.IDatabase;
 
 public class GetLocationsByType {
-	public Map<Integer, Location> getLocationListByType(String type){
+	public List<Location> getLocationListByType(String type){
 		IDatabase database = Database.getInstance();
 		return database.getLocationByTypeFromDB(type);
 	}

@@ -2,6 +2,10 @@ package edu.ycp.cs.cs496.buzzmateapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -43,7 +47,7 @@ public class MobileApplicationClient extends Activity {
 	public void getLocationList() throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetLocationList locationList = new GetLocationList();
-		Location[] locations = locationList.getLocationList();
+		List<Location> locations = locationList.getLocationList();
 		if(locations != null) {
 			displayLocationsView(locations);
 			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
@@ -55,8 +59,9 @@ public class MobileApplicationClient extends Activity {
 	public void getLocationsByType(String type) throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetLocationsByType locationList = new GetLocationsByType();
-		Location[] locations = locationList.GetLocationsByType(type);
+		List<Location> locations = locationList.GetLocationsByType(type);
 		if(locations != null) {
+			Toast.makeText(MobileApplicationClient.this, "displaying view", Toast.LENGTH_SHORT).show();
 			displayLocationsView(locations);
 			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
@@ -68,8 +73,8 @@ public class MobileApplicationClient extends Activity {
 	IOException, ParserConfigurationException, SAXException{
 		GetCab controller = new GetCab();
 		Cab cab = controller.getCab(cabName);
-		Cab[] singleLocationArray = new Cab[1];
-		singleLocationArray[0] = cab;
+		List<Cab> singleLocationArray = new ArrayList<Cab>();
+		singleLocationArray.add(cab);
 		if(cab != null) {
 			displayCabsView(singleLocationArray);
 		} else {
@@ -80,7 +85,7 @@ public class MobileApplicationClient extends Activity {
 	public void getCabList() throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetCabList cabList = new GetCabList();
-		Cab[] cabs = cabList.getCab();
+		List<Cab> cabs = cabList.getCab();
 		if(cabs != null) {
 			displayCabsView(cabs);
 		} else {
@@ -92,8 +97,8 @@ public class MobileApplicationClient extends Activity {
 	IOException, ParserConfigurationException, SAXException{
 		GetLocation controller = new GetLocation();
 		Location location = controller.getLocation(locationName);
-		Location[] singleLocationArray = new Location[1];
-		singleLocationArray[0] = location;
+		List<Location> singleLocationArray = new ArrayList<Location>();
+		singleLocationArray.add(location);
 		if(location != null) {
 			displayLocationsView(singleLocationArray);
 			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
@@ -124,9 +129,9 @@ public class MobileApplicationClient extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
-					startActivity(intent);
+					getLocationsByType("Bar");
 				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -163,8 +168,6 @@ public class MobileApplicationClient extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
-					startActivity(intent);
 					getLocationsByType("Food");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -200,8 +203,6 @@ public class MobileApplicationClient extends Activity {
 			public void onClick(View v) {
 				try {
 					getCabList();
-					Intent intent = new Intent(MobileApplicationClient.this, CabInformation.class);
-					startActivity(intent);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -211,7 +212,7 @@ public class MobileApplicationClient extends Activity {
 	}
 	
 
-	private void displayLocationsView(final Location[] locations) {
+	private void displayLocationsView(final List<Location> locations) {
 		// Create Linear layout
 				LinearLayout layout = new LinearLayout(this);
 				layout.setOrientation(LinearLayout.VERTICAL);
@@ -235,13 +236,8 @@ public class MobileApplicationClient extends Activity {
 
 				// Add button to layout
 				layout.addView(backButton);
-
-				String listArray [] = new String[locations.length];
-				for(int i = 0; i < locations.length; i++){
-					String str = locations[i].getName() + " - " + locations[i].getType();
-					listArray[i] = str;
-				}
-				ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
+				
+				ListAdapter la = new ArrayAdapter<Location>(this, R.layout.list_item, locations);
 				ListView lv = new ListView(this);
 				lv.setAdapter(la); 
 				lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -250,17 +246,17 @@ public class MobileApplicationClient extends Activity {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						Intent intent = new Intent(MobileApplicationClient.this, LocationInformation.class);
-						intent.putExtra("Name", locations[position].getName());
+						intent.putExtra("Name", locations.get(position).getName());
 						startActivity(intent);
 					}
 					
 				});
-			
+				
 				layout.addView(lv);
 				// Make inventory view visible
 				setContentView(layout,llp);				
 		    }
-	private void displayCabsView(final Cab[] cabs) {
+	private void displayCabsView(final List<Cab> cabs) {
 		// Create Linear layout
 				LinearLayout layout = new LinearLayout(this);
 				layout.setOrientation(LinearLayout.VERTICAL);
@@ -287,13 +283,7 @@ public class MobileApplicationClient extends Activity {
 				// Add button to layout
 				layout.addView(backButton);
 
-				// TODO: Add ListView with inventory - Implemented
-				String listArray [] = new String[cabs.length];
-				for(int i = 0; i < cabs.length; i++){
-					String str = cabs[i].getName();
-					listArray[i] = str;
-				}
-				ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
+				ListAdapter la = new ArrayAdapter<Cab>(this, R.layout.list_item, cabs);
 				ListView lv = new ListView(this);
 				lv.setAdapter(la); 
 				lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -302,7 +292,7 @@ public class MobileApplicationClient extends Activity {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						Intent intent = new Intent(MobileApplicationClient.this, CabInformation.class);
-						intent.putExtra("Name", cabs[position].getName());
+						intent.putExtra("Name", cabs.get(position).getName());
 						startActivity(intent);
 					}
 
