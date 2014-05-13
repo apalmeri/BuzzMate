@@ -48,4 +48,8 @@ public class Cab {
 		this.notes = notes;
 		
 	}
+	
+	public String toString() {
+		return name; 
+	}
 }

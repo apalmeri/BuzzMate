@@ -1,42 +1,45 @@
 package edu.ycp.cs.cs496.locations.model;
 
 public class SoberFriend {
+	private int id;
 	private String name;
 	private String phonenumber;
-	private char isUser;
-	private char isAvail;
-	private int userID;
 	
 	public SoberFriend(){
 		
 	}
-	
-	public SoberFriend(String name, String phonenumber, char isUser, int userID, char isAvailable) {
+
+	public SoberFriend(int id, String name, String phonenumber){
 		this.name = name;
 		this.phonenumber = phonenumber;
-		this.isUser = isUser;
-		this.isAvail = isAvailable;
-		this.userID = userID; 
 	}
 
-	public String getName() {
+	public int getID(){
+		return id;
+	}
+	
+	public String getName(){
 		return name;
 	}
-
-	public String getPhonenumber() {
+	
+	public String getPhonenumber(){
 		return phonenumber;
 	}
 
-	public char getIsUser() {
-		return isUser;
+	public void setId(int id) {
+		this.id = id;
+		
 	}
-
-	public char getIsAvail() {
-		return isAvail;
+	public void setName(String name) {
+		this.name = name;
+		
+	}
+	public void setPhone(String phone) {
+		this.phonenumber = phone;
+		
 	}
 	
-	public int getUserID() {
-		return userID;
+	public String toString() {
+		return name; 
 	}
-
 }

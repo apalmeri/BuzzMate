@@ -29,7 +29,10 @@
         <activity android:name="edu.ycp.cs.cs496.buzzmateapp.DrunkTest"></activity>         
 		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.CabInformation"></activity> 
 		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.MySoberFriends"></activity> 
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.SoberFriendInformation"></activity> 
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.AddSoberFriendPage"></activity> 
 		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.LoginPage"></activity> 
+		<activity android:name="edu.ycp.cs.cs496.buzzmateapp.UserInformation"></activity> 
 	</application>
 
 </manifest>

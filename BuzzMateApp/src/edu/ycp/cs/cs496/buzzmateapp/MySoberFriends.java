@@ -2,12 +2,13 @@ package edu.ycp.cs.cs496.buzzmateapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
-import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
+import edu.ycp.cs.cs496.buzzmateapp.R.layout;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetSoberFriendList;
-import edu.ycp.cs.cs496.locations.model.Location;
 import edu.ycp.cs.cs496.locations.model.SoberFriend;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,61 +28,79 @@ public class MySoberFriends extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setDefaultView();
-	}
-		
-	public void setDefaultView() {
-        setContentView(R.layout.soberbuddies_layout);
-        
-		// Add back button
-		Button backButton = (Button) findViewById(R.id.backButton);
-		
-		// TODO: Add back button onClickListener - Implemented
-		
-		backButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub - Implemented
-				finish();
-			}
-		});
-		
-		GetSoberFriendList soberFriendList = new GetSoberFriendList();
-		SoberFriend[] soberFriends = null;
 		try {
-			soberFriends = soberFriendList.getSoberFriend();
+			setDefaultView();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(soberFriends != null) {
+	}
+		
+	public void setDefaultView() throws ClientProtocolException, URISyntaxException, IOException {
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT);
+
+		// Add back button
+		Button backButton = new Button(this);
+		backButton.setText("Back");
+		backButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		backButton.setOnClickListener(new View.OnClickListener() {
 			
-			String listArray [] = new String[soberFriends.length];
-			for(int i = 0; i < soberFriends.length; i++){
-				String str = soberFriends[i].getName() + " - " + soberFriends[i].getIsAvail();
-				listArray[i] = str;
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
-			ListAdapter la = new ArrayAdapter<String>(this, R.layout.list_item, listArray);
-			ListView lv = new ListView(this);
-			lv.setAdapter(la); 
+		});
+		
+		Button addButton = new Button(this);
+		addButton.setText(" + ");
+		addButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		addButton.setOnClickListener(new View.OnClickListener() {
 			
-			lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MySoberFriends.this, AddSoberFriendPage.class);
+				startActivity(intent);
+			}
+		});
 
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					// TODO Auto-generated method stub
+		// Add button to layout
+		layout.addView(backButton);
+		layout.addView(addButton);
+		
+		GetSoberFriendList friendList = new GetSoberFriendList();
+		
+			
+		Toast.makeText(MySoberFriends.this, "Pulling Friends", Toast.LENGTH_SHORT).show();
+		
+		final List<SoberFriend> friends = friendList.getSoberFriend();
+		
+		Toast.makeText(MySoberFriends.this, "Pulled Friends", Toast.LENGTH_SHORT).show();
+		
+		ListAdapter la = new ArrayAdapter<SoberFriend>(this, R.layout.list_item, friends);
+		ListView lv = new ListView(this);
+		lv.setAdapter(la); 
+		
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
-				}
-				
-			});
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent(MySoberFriends.this, SoberFriendInformation.class);
+				intent.putExtra("Name", friends.get(position).getName());
+				startActivity(intent);
+			}
 			
-			this.addContentView(lv, null);
-			
-			
-		} else {
-			Toast.makeText(MySoberFriends.this, "No Sober Friends Found!", Toast.LENGTH_SHORT).show();
-		}			
+		});
+		// Make inventory view visible
+		layout.addView(lv);
+		setContentView(layout,llp);	
 	}
 }

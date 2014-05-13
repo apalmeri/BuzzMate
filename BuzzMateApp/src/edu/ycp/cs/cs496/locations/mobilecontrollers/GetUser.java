@@ -29,7 +29,7 @@ public class GetUser {
 		// Construct URI
 		URI uri;
 		String ip = "10.0.2.2";
-		uri = URIUtils.createURI("http", ip , 8081, "/User/"+userName, 
+		uri = URIUtils.createURI("http", ip , 8081, "/users/"+userName, 
 				    null, null);
 
 		// Construct request

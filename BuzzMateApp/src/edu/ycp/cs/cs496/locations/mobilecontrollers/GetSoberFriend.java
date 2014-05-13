@@ -29,7 +29,7 @@ public class GetSoberFriend {
 		// Construct URI
 		URI uri;
 		String ip = "10.0.2.2";
-		uri = URIUtils.createURI("http", ip , 8081, "/MyFriends/"+friendName, 
+		uri = URIUtils.createURI("http", ip , 8081, "/SoberFriends/"+friendName, 
 				    null, null);
 
 		// Construct request

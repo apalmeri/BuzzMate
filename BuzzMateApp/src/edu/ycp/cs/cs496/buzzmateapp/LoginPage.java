@@ -41,7 +41,7 @@ public class LoginPage extends Activity{
 					GetUser controller = new GetUser();
 					User user = controller.getUSer(username);
 					String userActualPass = user.getPassword();
-					if(password.equals(password)) {
+					if(password.equals(userActualPass)) {
 						Intent intent = new Intent(LoginPage.this, MobileApplicationClient.class);
 						startActivity(intent);
 					}else{

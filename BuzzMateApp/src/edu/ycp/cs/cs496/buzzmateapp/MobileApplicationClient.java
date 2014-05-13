@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.client.ClientProtocolException;
@@ -17,13 +14,14 @@ import edu.ycp.cs.cs496.locations.mobilecontrollers.GetCabList;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocation;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationList;
 import edu.ycp.cs.cs496.locations.mobilecontrollers.GetLocationsByType;
+import edu.ycp.cs.cs496.locations.mobilecontrollers.GetUserList;
 import edu.ycp.cs.cs496.locations.model.Cab;
 import edu.ycp.cs.cs496.locations.model.Location;
+import edu.ycp.cs.cs496.locations.model.User;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -50,20 +48,31 @@ public class MobileApplicationClient extends Activity {
 		List<Location> locations = locationList.getLocationList();
 		if(locations != null) {
 			displayLocationsView(locations);
-			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
+	public void getUsers() throws ClientProtocolException, URISyntaxException, IOException {
+		GetUserList userlist = new GetUserList();
+		Toast.makeText(MobileApplicationClient.this, "Grabbing User", Toast.LENGTH_SHORT).show();
+		List<User> users = userlist.getUser();
+		Toast.makeText(MobileApplicationClient.this, "Grabbed User?", Toast.LENGTH_SHORT).show();
+		if(users != null) {
+			Toast.makeText(MobileApplicationClient.this, "Entering View", Toast.LENGTH_SHORT).show();
+			displayUsersView(users);
+		} else {
+			Toast.makeText(MobileApplicationClient.this, "No Users Found!", Toast.LENGTH_SHORT).show();
+		}		
+	}
+
+
 	public void getLocationsByType(String type) throws URISyntaxException, ClientProtocolException, 
 	IOException, ParserConfigurationException, SAXException{
 		GetLocationsByType locationList = new GetLocationsByType();
 		List<Location> locations = locationList.GetLocationsByType(type);
 		if(locations != null) {
-			Toast.makeText(MobileApplicationClient.this, "displaying view", Toast.LENGTH_SHORT).show();
 			displayLocationsView(locations);
-			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
 		}
@@ -101,7 +110,6 @@ public class MobileApplicationClient extends Activity {
 		singleLocationArray.add(location);
 		if(location != null) {
 			displayLocationsView(singleLocationArray);
-			Toast.makeText(MobileApplicationClient.this, "Locations Found!", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(MobileApplicationClient.this, "No Locations Found!", Toast.LENGTH_SHORT).show();
 		}
@@ -130,6 +138,19 @@ public class MobileApplicationClient extends Activity {
 			public void onClick(View v) {
 				try {
 					getLocationsByType("Bar");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+       
+       friendButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					getUsers();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -209,8 +230,20 @@ public class MobileApplicationClient extends Activity {
 			}
 		});
 		
+		soberButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				try {
+					Intent intent = new Intent(MobileApplicationClient.this, MySoberFriends.class);
+					startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 	}
-	
 
 	private void displayLocationsView(final List<Location> locations) {
 		// Create Linear layout
@@ -302,5 +335,53 @@ public class MobileApplicationClient extends Activity {
 				// Make inventory view visible
 				setContentView(layout,llp);				
 		    }
+	
+	private void displayUsersView(final List<User> users) {
+		// Create Linear layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT);
+
+		// Add back button
+		Button backButton = new Button(this);
+		backButton.setText("Back");
+		backButton.setLayoutParams(new LayoutParams(
+				LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		// TODO: Add back button onClickListener - Implemented
+		backButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setDefaultView();
+			}
+		});
+
+
+		// Add button to layout
+		layout.addView(backButton);
+
+		ListAdapter la = new ArrayAdapter<User>(this, R.layout.list_item, users);
+		ListView lv = new ListView(this);
+		lv.setAdapter(la); 
+		lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent(MobileApplicationClient.this, UserInformation.class);
+				intent.putExtra("Name", users.get(position).getUsername());
+				startActivity(intent);
+			}
+
+		});
+
+		layout.addView(lv);
+		// Make inventory view visible
+		setContentView(layout,llp);	
+		
+	}
 }
 

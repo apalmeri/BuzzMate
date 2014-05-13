@@ -3,6 +3,8 @@ package edu.ycp.cs.cs496.locations.mobilecontrollers;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,15 +15,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import edu.ycp.cs.cs496.locations.model.Location;
 import edu.ycp.cs.cs496.locations.model.SoberFriend;
 import edu.ycp.cs.cs496.locations.model.json.JSON;
 
 public class GetSoberFriendList {
-	public SoberFriend[] getSoberFriend() throws ClientProtocolException, URISyntaxException, IOException {
+	public List<SoberFriend> getSoberFriend() throws ClientProtocolException, URISyntaxException, IOException {
 		return makeGetRequest();
 	}
 
-	private SoberFriend[] makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
+	private List<SoberFriend> makeGetRequest() throws URISyntaxException, ClientProtocolException, IOException
 	{
 		// Create HTTP client
  		HttpClient client = new DefaultHttpClient();
@@ -29,7 +32,7 @@ public class GetSoberFriendList {
 		// Construct URI
 		URI uri;
 		String ip = "10.0.2.2";
-		uri = URIUtils.createURI("http", ip , 8081, "/MyFriends", 
+		uri = URIUtils.createURI("http", ip , 8081, "/SoberFriends", 
 				    null, null);
 
 		// Construct request
@@ -44,7 +47,8 @@ public class GetSoberFriendList {
 			HttpEntity entity = response.getEntity();
 			
 			// Parse JSON
-			return JSON.getObjectMapper().readValue(entity.getContent(), SoberFriend[].class);
+			SoberFriend[] friends = JSON.getObjectMapper().readValue(entity.getContent(), SoberFriend[].class);
+			return Arrays.asList(friends);
 		} 
 		
 		// Return null if invalid response
